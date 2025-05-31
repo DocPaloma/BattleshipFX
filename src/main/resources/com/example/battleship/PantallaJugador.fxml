@@ -19,7 +19,7 @@
                   <Insets bottom="120.0" />
                </VBox.margin>
             </Label>
-            <Button mnemonicParsing="false" text="Estrategia LISTA!!" />
+            <Button mnemonicParsing="false" onAction="#onActionBotonEstrategiaLista" text="Estrategia LISTA!!" />
             <Button mnemonicParsing="false" text="Abandonar">
                <VBox.margin>
                   <Insets top="120.0" />

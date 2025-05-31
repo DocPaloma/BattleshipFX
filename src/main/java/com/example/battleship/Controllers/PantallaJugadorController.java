@@ -1,7 +1,10 @@
 package com.example.battleship.Controllers;
 
+import com.example.battleship.Models.AlertaIniciarJuego;
 import com.example.battleship.Models.Barco;
 import com.example.battleship.Models.JugadorPersona;
+import com.example.battleship.Views.JuegoBatallaNavalView;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -128,6 +131,7 @@ public class PantallaJugadorController {
             rutaImagenseleccionada = ruta; // Guarda la ruta de la imagen que se selecciono para usarla en el momento de crear las figuras 2D
             System.out.println("Ruta de imagen seleccionada: " + rutaImagenseleccionada);
             gridPaneTableroJugador.requestFocus(); // Se llama a requestFocus para que en el gridPane se detecte cuando se presiona la tecla R
+            imagenBarco.setOpacity(0.0);
         });
 
         // agrega la imagen al contenedor
@@ -137,29 +141,32 @@ public class PantallaJugadorController {
     private void agregarBarcoComoFigura2D(int fila, int columna) {
         int tamano = barcoSeleccionado.getTamano();
         boolean vertical = barcoSeleccionado.esVerical();
-        int celda = 45;
+
+        int ancho = vertical ? 45 : 45 * tamano;
+        int alto = vertical ? 45 * tamano : 45;
 
         ImagePattern patron = new ImagePattern(new Image(getClass().getResourceAsStream(rutaImagenseleccionada)));
 
-        for (int i = 0; i < tamano; i++) {
-            int f = vertical ? fila + i : fila;
-            int c = vertical ? columna : columna + i;
+        Rectangle barcoRect = new Rectangle(ancho, alto);
+        barcoRect.setFill(patron);
+        barcoRect.setStroke(Color.BLACK);
 
-            for (Node node : gridPaneTableroJugador.getChildren()) {
-                Integer nodeRow = GridPane.getRowIndex(node);
-                Integer nodeCol = GridPane.getColumnIndex(node);
-                if (nodeRow == null) nodeRow = 0;
-                if (nodeCol == null) nodeCol = 0;
+        if (vertical) {
+            barcoRect.setTranslateY((alto - 45) / 2.0); // Esto ya está bien para vertical
+        } else {
+            barcoRect.setTranslateX(0); // Esta línea es la que ajusta horizontalmente
+        }
 
-                if (nodeRow == f && nodeCol == c) {
-                    Rectangle rect = new Rectangle(celda, celda);
-                    rect.setFill(patron);
-                    rect.setStroke(Color.BLACK);
+        for (Node node : gridPaneTableroJugador.getChildren()) {
+            Integer nodeRow = GridPane.getRowIndex(node);
+            Integer nodeCol = GridPane.getColumnIndex(node);
+            if (nodeRow == null) nodeRow = 0;
+            if (nodeCol == null) nodeCol = 0;
 
-                    StackPane celdaPane = (StackPane) node;
-                    celdaPane.getChildren().add(rect);
-                    break;
-                }
+            if (nodeRow == fila && nodeCol == columna) {
+                StackPane celdaInicial = (StackPane) node;
+                celdaInicial.getChildren().add(barcoRect);
+                break;
             }
         }
     }
@@ -170,97 +177,18 @@ public class PantallaJugadorController {
         }
     }
 
+    @FXML
+    void onActionBotonEstrategiaLista(ActionEvent event) throws IOException {
+        AlertaIniciarJuego alert =  new AlertaIniciarJuego();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /**
-
-    // Cuando el usuario hace clic sobre una imagen de un barco crea un objeto tipo Barco para empezar a usarlo en la logica
-    private void asignarEventoBarco(ImageView imagenBarcoSeleccionado, String nombreBarco, int tamanoBarco) {
-        imagenBarcoSeleccionado.setOnMouseClicked(e -> {
-           barcoSeleccionado = new Barco(nombreBarco, tamanoBarco); // Lo crea
-           barcoSeleccionadoImageView = imagenBarcoSeleccionado; // Lo guarda para modificar su visualidad despues de usado
-           barcoSeleccionado.setVerical(true); // Por defecto el barco se pone horizontal
-           gridPaneTableroJugador.requestFocus(); // Esto habilita que detecte si se toca la letra R para el cambio de orientacion
-        });
-    }
-
-    // Detecta si un jugador presiona la tecla R mientras tiene un barco seleccionado para cambiar la orientacion de barco
-    private void teclado(KeyEvent event) {
-        if(event.getCode() == KeyCode.R && barcoSeleccionado != null){
-            boolean nuevaOrientacion = !barcoSeleccionado.esVerical();
-            barcoSeleccionado.setVerical(nuevaOrientacion);
+        boolean confirmacion = alert.mostrarAlertaDeConfirmacion
+                ("Alerta de iniciar juego", "Esta es una ventana de alerta", "Deseas iniciar la partida???");
+        if (confirmacion) {
+            JuegoBatallaNavalView juegoBatallaNavalView = JuegoBatallaNavalView.getInstance();
+            juegoBatallaNavalView.getController().setJugador(jugadorPersona);
+            juegoBatallaNavalView.show();
         }
     }
-
-     **/
-
-
-
-
-    /**
-    private void agregarBarcoAlTablero(ImageView imageViewOriginal, Barco barco, int fila, int columna){
-
-        int tamanoBarco = barco.getTamano();
-        boolean vertical = barco.esVerical();
-
-        // Modificacion de la dimension visual del barco segun la orientacion
-        double ancho = vertical ? 45 : tamanoBarco * 45;
-        double alto = vertical ? tamanoBarco * 45 : 45;
-
-
-        ImageView copiaBarco = new ImageView(imageViewOriginal.getImage());
-        // Asignacion de la dimension de los barcos
-        copiaBarco.setFitWidth(ancho);
-        copiaBarco.setFitHeight(alto);
-        copiaBarco.setRotate(vertical ? 0 : 90);
-
-        // Buscar la celda inicial
-        for(Node node : gridPaneTableroJugador.getChildren()){
-            Integer nodeFila = GridPane.getRowIndex(node);
-            Integer nodeColumna = GridPane.getColumnIndex(node);
-
-
-
-            // Por seguridad en caso de valores nulos (esquinas sin coordenadas explícitas)
-            if (nodeFila == null) nodeFila = 0;
-            if (nodeColumna == null) nodeColumna = 0;
-
-            if (nodeFila == fila && nodeColumna == columna) {
-                StackPane celda = (StackPane) node;
-                celda.getChildren().add(copiaBarco); // Agregar imagen a esa celda
-                break;
-            }
-
-
-        }
-    }
-     **/
-
-
 
     /**
      * This method receives a player of type JugadorPersona and stores it in the jugador atribute
@@ -276,4 +204,5 @@ public class PantallaJugadorController {
     public void mostrarNombreJugador(){
         labelNombreJugador.setText(jugadorPersona.getNombre());
     }
+
 }

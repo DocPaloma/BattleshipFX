@@ -87,4 +87,12 @@ public class Tablero {
         }
         System.out.println(); // Línea extra para separar
     }
+
+
+
+    // Metodo para copiar la estrategia que jugadorPersona creo en la primer pantalla
+    public boolean hayBarcoEn(int fila, int columna) {
+        return celdas[fila][columna] != null; // Ajusta según tu lógica
+    }
+
 }

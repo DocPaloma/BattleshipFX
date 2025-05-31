@@ -3,6 +3,7 @@ module com.example.battleship {
     requires javafx.fxml;
     requires jdk.compiler;
     requires java.desktop;
+    requires java.logging;
 
     opens com.example.battleship to javafx.fxml;
     opens com.example.battleship.Controllers to javafx.fxml;
