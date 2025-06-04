@@ -91,8 +91,19 @@ public class Tablero {
 
 
     // Metodo para copiar la estrategia que jugadorPersona creo en la primer pantalla
-    public boolean hayBarcoEn(int fila, int columna) {
-        return celdas[fila][columna] != null; // Ajusta según tu lógica
+    public boolean hayBarco(int fila, int columna) {
+        return celdas[fila][columna] != null;
     }
+
+    // Aqui capturamos la ruta de la imagen segun la fila y columna en la que se encuentre
+    public String getRutaImagen(int fila, int columna) {
+        return celdas[fila][columna].getRutaImagen();
+    }
+
+    public Barco getBarco(int fila, int columna) {
+        return celdas[fila][columna];
+    }
+
+
 
 }

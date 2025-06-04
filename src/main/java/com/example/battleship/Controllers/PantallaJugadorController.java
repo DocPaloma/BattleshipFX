@@ -2,35 +2,27 @@ package com.example.battleship.Controllers;
 
 import com.example.battleship.Models.AlertaIniciarJuego;
 import com.example.battleship.Models.Barco;
+import com.example.battleship.Models.JugadorMaquina;
 import com.example.battleship.Models.JugadorPersona;
 import com.example.battleship.Views.JuegoBatallaNavalView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class PantallaJugadorController {
 
@@ -43,7 +35,11 @@ public class PantallaJugadorController {
     @FXML
     private Label labelNombreJugador;
 
+    @FXML
+    private HBox hBoxPrincipal;
+
     private JugadorPersona jugadorPersona;
+    private JugadorMaquina jugadorMaquina;
     private Barco barcoSeleccionado;
     private ImageView barcoSeleccionadoImageView; // para modificar visualmente la imagen del barco que se puso, ponerla trasparente
     private StackPane barcoVisualSeleccionado;
@@ -54,6 +50,9 @@ public class PantallaJugadorController {
 
 
     public void initialize() throws IOException {
+        String imagenFondo = getClass().getResource("/com/example/battleship/Images/imagenFondo2.png").toExternalForm();
+        hBoxPrincipal.setStyle("-fx-background-image: url('" + imagenFondo + "'); -fx-background-size: cover;");
+
         jugadorPersona = new JugadorPersona("Jugador");
 
         crearTableroVisual();
@@ -104,7 +103,7 @@ public class PantallaJugadorController {
         crearImagenesBarcos("/com/example/battleship/Images/fragata4.png", "fragata4", 1);
 
         // Cargar las 3 imagenes de los destructores
-        crearImagenesBarcos("/com/example/battleship/Images/desctructor1.png", "destructor1", 2);
+        crearImagenesBarcos("/com/example/battleship/Images/destructor1.png", "destructor1", 2);
         crearImagenesBarcos("/com/example/battleship/Images/destructor2.png", "destructor2", 2);
         crearImagenesBarcos("/com/example/battleship/Images/destructor3.png", "destructor3", 2);
 
@@ -130,6 +129,10 @@ public class PantallaJugadorController {
             barcoSeleccionado.setVerical(true); // Por defecto el barco se pone vertical a menos que se presione la letra R
             rutaImagenseleccionada = ruta; // Guarda la ruta de la imagen que se selecciono para usarla en el momento de crear las figuras 2D
             System.out.println("Ruta de imagen seleccionada: " + rutaImagenseleccionada);
+
+            // Aqui le damos la ruta de la imagen al barco
+            barcoSeleccionado.setRutaImagen(rutaImagenseleccionada);
+
             gridPaneTableroJugador.requestFocus(); // Se llama a requestFocus para que en el gridPane se detecte cuando se presiona la tecla R
             imagenBarco.setOpacity(0.0);
         });
@@ -184,8 +187,14 @@ public class PantallaJugadorController {
         boolean confirmacion = alert.mostrarAlertaDeConfirmacion
                 ("Alerta de iniciar juego", "Esta es una ventana de alerta", "Deseas iniciar la partida???");
         if (confirmacion) {
+            jugadorMaquina = new JugadorMaquina("Jugador Maquina");
+            jugadorMaquina.colocarBarcosAleatoriamente();
+
             JuegoBatallaNavalView juegoBatallaNavalView = JuegoBatallaNavalView.getInstance();
             juegoBatallaNavalView.getController().setJugador(jugadorPersona);
+            juegoBatallaNavalView.getController().mostrarNombreJugador2();
+            juegoBatallaNavalView.getController().setJugadorMaquina(jugadorMaquina);
+
             juegoBatallaNavalView.show();
         }
     }

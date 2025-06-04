@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
@@ -18,6 +19,15 @@ public class InicioJuegoController {
 
     @FXML
     private Label labelMensaje;
+
+    @FXML
+    private VBox vBoxPrincipal;
+
+
+    public void initialize(){
+        String imagenFondo = getClass().getResource("/com/example/battleship/Images/imagenFondo2.png").toExternalForm();
+        vBoxPrincipal.setStyle("-fx-background-image: url('" + imagenFondo + "'); -fx-background-size: cover;");
+    }
 
     @FXML
     void onActionBotonIniciar(ActionEvent actionEvent) throws IOException {

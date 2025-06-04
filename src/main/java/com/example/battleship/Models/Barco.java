@@ -11,6 +11,11 @@ public class Barco {
     private String nombre;
     private int impactos = 0;
     private Image image;
+    private String rutaImagen;
+
+    // NUEVO:
+    private int filaInicio;
+    private int columnaInicio;
 
 
     // Parametro tamaño para saber cuantas casillas ocupa un barco creado
@@ -21,6 +26,12 @@ public class Barco {
         this.vertical = true; // Se toma por defecto que el barco se pone horizontal
         this.fila = -1; // el -1 lo puse para saber que el barco aun no se ha puesto
         this.columna = -1;
+    }
+
+    public Barco(String nombre, int tamano, String rutaImagen) {
+        this.nombre = nombre;
+        this.tamano = tamano;
+        this.rutaImagen = rutaImagen;
     }
 
     public String getNombre() {
@@ -72,5 +83,25 @@ public class Barco {
 
     public Image getImage(){
         return image;
+    }
+
+    public void setRutaImagen(String rutaImagen) {
+        this.rutaImagen = rutaImagen;
+    }
+
+    public String getRutaImagen() {
+        return rutaImagen;
+    }
+
+
+
+
+    public void setPosicionInicio(int fila, int columna) {
+        this.filaInicio = fila;
+        this.columnaInicio = columna;
+    }
+
+    public boolean esInicio(int fila, int columna) {
+        return this.filaInicio == fila && this.columnaInicio == columna;
     }
 }
