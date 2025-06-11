@@ -73,7 +73,8 @@ public class Barco {
         impactos++;
     }
 
-    public boolean estaHundido(){
+    public boolean barcoHundido(){
+        System.out.println("Impactos: " + impactos + " Tamano: " + tamano);
         return impactos >= tamano;
     }
 

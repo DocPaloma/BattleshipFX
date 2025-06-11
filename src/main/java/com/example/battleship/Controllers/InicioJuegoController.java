@@ -12,6 +12,13 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
+/**
+ * This class handles the interaction and initialization of the start interface
+ *
+ * @author vaneg
+ * @author Alejandro Medina
+ * @version 1.0
+ */
 public class InicioJuegoController {
 
     @FXML
@@ -23,12 +30,21 @@ public class InicioJuegoController {
     @FXML
     private VBox vBoxPrincipal;
 
-
+    /**
+     * This method is the first to be executed in this interface, it adds a background image
+     */
     public void initialize(){
         String imagenFondo = getClass().getResource("/com/example/battleship/Images/imagenFondo2.png").toExternalForm();
         vBoxPrincipal.setStyle("-fx-background-image: url('" + imagenFondo + "'); -fx-background-size: cover;");
     }
 
+    /**
+     * When the button is pressed, this event saves the entered name, triggers an alert,
+     * and loads the PantallaJugadorView
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
     @FXML
     void onActionBotonIniciar(ActionEvent actionEvent) throws IOException {
         String nombre = textFieldNombre.getText().trim();

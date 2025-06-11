@@ -6,7 +6,12 @@ public class JugadorPersona extends  Jugador {
     }
 
     @Override
-    public boolean disparar(Jugador enemigo, int fila, int columna) {
-        return false;
+    public boolean disparar(Tablero enemigo, int fila, int columna) {
+        Barco resultado = enemigo.recibirDisparo(fila, columna);
+        return resultado != null;
+    }
+
+    public boolean zeroBarcos(){
+        return getTablero().zeroBarcos();
     }
 }

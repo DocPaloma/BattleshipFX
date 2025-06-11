@@ -3,12 +3,14 @@ package com.example.battleship.Models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Tablero {
+public class Tablero extends Observable{
 
     public static final int tamano = 10; // El tablero sera de 10x10
 
     private Barco[][] celdas; // matriz donde iran objetos de tipo Barco
     private List<Barco> barcosColocados; // Para saber que barcos estan en juego o puestos en tablero
+
+    private boolean[][] disparoRealizado = new boolean[tamano][tamano]; // matriz booleana donde se guardan los lugares donde se disparo
 
     // El constructor prepara el tablero
     public Tablero() {
@@ -57,16 +59,21 @@ public class Tablero {
     }
 
 
-    public boolean recibirDisparo(int fila, int columna){
+    public Barco recibirDisparo(int fila, int columna){
+        disparoRealizado[fila][columna] = true; // Aqui se guarda el disparo
+
         if(celdas[fila][columna] != null) { // Verifica si esa ubicacion esta ocupada
             Barco barco = celdas[fila][columna]; // Accede a la matriz, la ubicacion en donde se disparo
             barco.recibirImpacto(); // el daño del barco aumenta 1 debido a que se le disparo
-            if (barco.estaHundido()) {
-                barcosColocados.remove(barco);
+            if (barco.barcoHundido()) {
+                avisarObservadores("barco_hundido", new PosicionBarco(barco, this));
+            } else{
+                avisarObservadores("impacto", new int[]{fila, columna});
             }
-            return true; // acerto en el disparo
+            return barco; // acerto en el disparo
         } else {
-            return false; // Fallo en el disparo
+            avisarObservadores("agua", new int[]{fila, columna});
+            return null;
         }
     }
 
@@ -104,6 +111,21 @@ public class Tablero {
         return celdas[fila][columna];
     }
 
+
+    public boolean zeroBarcos(){
+        for(Barco barco :  barcosColocados){
+            if(!barco.barcoHundido()){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    public boolean huboDisparoAqui(int fila, int columna){
+        return disparoRealizado[fila][columna];
+    }
 
 
 }

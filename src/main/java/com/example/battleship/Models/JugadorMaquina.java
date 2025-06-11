@@ -8,32 +8,11 @@ public class JugadorMaquina extends Jugador {
 
     private Random random = new Random();
 
+    private List<String> coordenadasEscogidas = new ArrayList<>();
+
     public JugadorMaquina(String nombre) {
         super("Maquina");
     }
-
-    /**
-    public void colocarBarcosAleatoriamente(){
-        List<Barco> barcosDispoibles = crearListaBarcosConImagenes();
-
-        for(Barco barco : barcosDispoibles){
-            boolean colocado = false;
-
-            while(!colocado){
-                boolean vertical = random.nextBoolean();
-                int fila = random.nextInt(10);
-                int columna = random.nextInt(10);
-
-                barco.setVerical(vertical);
-
-                if(getTablero().colocarBarco(barco, fila, columna, vertical)){
-                    barco.setPosicionInicio(fila, columna);
-                    colocado = true;
-                }
-            }
-        }
-    }
-     **/
 
 
     public void colocarBarcosAleatoriamente() {
@@ -79,56 +58,6 @@ public class JugadorMaquina extends Jugador {
     }
 
 
-
-    /**
-    public void colocarBarcosAleatoriamente() {
-        List<Barco> barcosPorColocar = new ArrayList<>(crearListaBarcosConImagenes()); // Copia de la lista original
-        List<Barco> barcosColocados = new ArrayList<>();
-
-        System.out.println("Iniciando colocación de barcos...");
-        imprimirTableroBinario();
-        System.out.println();
-
-        while (!barcosPorColocar.isEmpty()) {
-            Barco barco = barcosPorColocar.remove(0); // Siempre toma el primer barco (el orden ya es aleatorio por el shuffle)
-
-            boolean colocado = false;
-            int intentos = 0;
-            final int MAX_INTENTOS = 100;
-
-            while (!colocado && intentos < MAX_INTENTOS) {
-                boolean vertical = random.nextBoolean();
-                int fila = random.nextInt(10);
-                int columna = random.nextInt(10);
-
-                barco.setVerical(vertical);
-
-                if (getTablero().colocarBarco(barco, fila, columna, vertical)) {
-                    barco.setPosicionInicio(fila, columna);
-                    colocado = true;
-                    barcosColocados.add(barco);
-
-                    System.out.println("✅ Barco COLOCADO: " + barco.getNombre() +
-                            " (" + barco.getTamano() + " casillas) en " +
-                            "[" + fila + "," + columna + "] " +
-                            (vertical ? "VERTICAL" : "HORIZONTAL"));
-                    imprimirTableroBinario();
-                    System.out.println();
-                }
-                intentos++;
-            }
-
-            if (!colocado) {
-                System.err.println("❌ NO se pudo colocar el barco: " + barco.getNombre());
-            }
-        }
-
-        System.out.println("🎯 TODOS LOS BARCOS COLOCADOS (" + barcosColocados.size() + ")");
-        imprimirTableroBinario();
-
-    }
-     **/
-
     private void imprimirTableroBinario() {
         System.out.println("   0 1 2 3 4 5 6 7 8 9"); // Encabezado columnas
 
@@ -162,8 +91,29 @@ public class JugadorMaquina extends Jugador {
         return barcosDisponibles;
     }
 
+    public int[] elegirCoordenadasAleatorias(){
+        Random random = new Random();
+        int fila;
+        int columna;
+        String coordenadaElegida;
+
+        do{
+            fila = random.nextInt(10);
+            columna = random.nextInt(10);
+            coordenadaElegida = fila + "," + columna;
+        } while(coordenadasEscogidas.contains(coordenadaElegida));
+        //while(getTablero().huboDisparoAqui(fila, columna));
+        coordenadasEscogidas.add(coordenadaElegida);
+        return new int[]{fila, columna};
+    }
+
     @Override
-    public boolean disparar(Jugador enemigo, int fila, int columna) {
-        return false;
+    public boolean disparar(Tablero enemigo, int fila, int columna) {
+        Barco resultado = enemigo.recibirDisparo(fila, columna);
+        return resultado != null;
+    }
+
+    public boolean zeroBarcos(){
+        return getTablero().zeroBarcos();
     }
 }

@@ -17,4 +17,5 @@ public class AlertaIniciarJuego implements AlertaInterface {
 
         return result.isPresent() && result.get() == ButtonType.OK; //Retorna true si presiona OK
     }
+
 }

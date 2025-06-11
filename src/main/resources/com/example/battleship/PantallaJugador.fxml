@@ -13,7 +13,7 @@
 
 <HBox fx:id="hBoxPrincipal" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.battleship.Controllers.PantallaJugadorController">
    <children>
-      <VBox alignment="CENTER" prefHeight="600.0" prefWidth="179.0" HBox.hgrow="SOMETIMES">
+      <VBox alignment="CENTER" prefHeight="600.0" prefWidth="179.0" style="-fx-border-color: white; -fx-border-width: 3px;" HBox.hgrow="SOMETIMES">
          <children>
             <Label fx:id="labelNombreJugador" text="Apodo">
                <VBox.margin>
@@ -37,7 +37,7 @@
             </Button>
          </children>
       </VBox>
-      <VBox alignment="CENTER" prefHeight="600.0" prefWidth="15.0" HBox.hgrow="ALWAYS">
+      <VBox alignment="CENTER" prefHeight="600.0" prefWidth="15.0" style="-fx-border-color: white; -fx-border-width: 3px;" HBox.hgrow="ALWAYS">
          <children>
             <Label style="-fx-background-color: #D3D3D3; -fx-background-radius: 8px; -fx-border-color: #89CFF0; -fx-border-radius: 8px; -fx-border-width: 3px;" text="ARMA TU ESTRATEGIA">
                <VBox.margin>
@@ -81,7 +81,7 @@
             </GridPane>
          </children>
       </VBox>
-      <VBox alignment="CENTER" prefHeight="600.0" prefWidth="321.0" HBox.hgrow="SOMETIMES">
+      <VBox alignment="CENTER" prefHeight="600.0" prefWidth="321.0" style="-fx-border-color: white; -fx-border-width: 3px;" HBox.hgrow="SOMETIMES">
          <children>
             <Label text="Seleciona el barco">
                <VBox.margin>

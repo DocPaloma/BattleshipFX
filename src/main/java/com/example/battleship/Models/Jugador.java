@@ -34,6 +34,6 @@ public abstract class Jugador {
     }
 
     // Se crea un metodo aabstracto para que cada jugador tenga su propia version de disparar
-    public abstract boolean disparar(Jugador enemigo, int fila, int columna);
+    public abstract boolean disparar(Tablero enemigo, int fila, int columna);
 
 }

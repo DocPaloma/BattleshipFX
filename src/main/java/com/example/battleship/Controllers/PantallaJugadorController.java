@@ -1,9 +1,6 @@
 package com.example.battleship.Controllers;
 
-import com.example.battleship.Models.AlertaIniciarJuego;
-import com.example.battleship.Models.Barco;
-import com.example.battleship.Models.JugadorMaquina;
-import com.example.battleship.Models.JugadorPersona;
+import com.example.battleship.Models.*;
 import com.example.battleship.Views.JuegoBatallaNavalView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,6 +41,8 @@ public class PantallaJugadorController {
     private ImageView barcoSeleccionadoImageView; // para modificar visualmente la imagen del barco que se puso, ponerla trasparente
     private StackPane barcoVisualSeleccionado;
     private String rutaImagenseleccionada;
+
+    private StackPane[][] celdas = new StackPane[10][10]; // matriz 10x10 de StackPane
 
 
 
@@ -90,6 +89,7 @@ public class PantallaJugadorController {
                     }
                 });
                 gridPaneTableroJugador.add(celda, columna, fila);
+                celdas[fila][columna] = celda;
             }
         }
 
@@ -125,8 +125,9 @@ public class PantallaJugadorController {
 
         // Evento al hacer clic sobre las imagenes, cada que se crea una imagen se crea con este evento
         imagenBarco.setOnMouseClicked(e -> {
-            barcoSeleccionado = new Barco(nombre, tamano); // El barco seleccionado se le crea un objeto Barco con su nombre y tamaño
-            barcoSeleccionado.setVerical(true); // Por defecto el barco se pone vertical a menos que se presione la letra R
+            barcoSeleccionado = BarcoFactory.crearBarco(nombre, rutaImagenseleccionada);
+            //barcoSeleccionado = new Barco(nombre, tamano); // El barco seleccionado se le crea un objeto Barco con su nombre y tamaño
+            //barcoSeleccionado.setVerical(true); // Por defecto el barco se pone vertical a menos que se presione la letra R
             rutaImagenseleccionada = ruta; // Guarda la ruta de la imagen que se selecciono para usarla en el momento de crear las figuras 2D
             System.out.println("Ruta de imagen seleccionada: " + rutaImagenseleccionada);
 
@@ -160,6 +161,7 @@ public class PantallaJugadorController {
             barcoRect.setTranslateX(0); // Esta línea es la que ajusta horizontalmente
         }
 
+        /**
         for (Node node : gridPaneTableroJugador.getChildren()) {
             Integer nodeRow = GridPane.getRowIndex(node);
             Integer nodeCol = GridPane.getColumnIndex(node);
@@ -172,6 +174,10 @@ public class PantallaJugadorController {
                 break;
             }
         }
+         **/
+
+        StackPane celdaInicial = celdas[fila][columna];
+        celdaInicial.getChildren().add(barcoRect);
     }
 
     private void teclado(KeyEvent event) {
@@ -192,8 +198,11 @@ public class PantallaJugadorController {
 
             JuegoBatallaNavalView juegoBatallaNavalView = JuegoBatallaNavalView.getInstance();
             juegoBatallaNavalView.getController().setJugador(jugadorPersona);
-            juegoBatallaNavalView.getController().mostrarNombreJugador2();
+            //juegoBatallaNavalView.getController().mostrarNombreJugador2();
             juegoBatallaNavalView.getController().setJugadorMaquina(jugadorMaquina);
+
+            juegoBatallaNavalView.getController().setFuncionamientoJuego(new FuncionamientoJuego(jugadorPersona, jugadorMaquina));
+            juegoBatallaNavalView.getController().alIniciarJuego();
 
             juegoBatallaNavalView.show();
         }
