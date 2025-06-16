@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox fx:id="vBoxPrincipal" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.battleship.Controllers.InstruccionesController">
+   <children>
+      <Label text="INSTRUCCIONES">
+         <VBox.margin>
+            <Insets bottom="40.0" />
+         </VBox.margin>
+         <font>
+            <Font name="Bernard MT Condensed" size="27.0" />
+         </font>
+      </Label>
+      <TextArea prefHeight="242.0" prefWidth="600.0" text="DESCRIPCION GENERAL!!!&#10;&quot;Batalla Naval&quot; es un juego de estrategia entre un jugador humano y la máquina. El objetivo &#10;es hundir toda la flota enemiga antes de que el oponente hunda la tuya. se juega en dos &#10;tableros de 10x10:&#10;&#10;-Tablero jugadorPersona -&gt; Aquí colocas tu flota antes de iniciar la partida. Este tablero solo &#10;es de observación durante el juego. Podrás ver tus barcos y los disparos enemigos, pero no &#10;puedes mover ni disparar desde este tablero. &#10;&#10;-Tablero jugadorMaquina -&gt; Este es el tablero enemigo donde deberás disparar para &#10;encontrar y hundir los barcos de la máquina. Aquí se muestran todos tus movimientos: &#10;disparos al agua, barcos tocados y hundidos.&#10;&#10;BARCOS&#10;Cada jugador tiene 10 barcos distribuidos de la siguiente forma:&#10;-1 Portaaviones → ocupa 4 casillas&#10;-2 Submarinos → 3 casillas cada uno&#10;-3 Destructores → 2 casillas cada uno&#10;-4 Fragatas → 1 casilla cada una&#10;Puedes colocar tus barcos en posición vertical u horizontal y puedes cambiar la posicion &#10;con la letra R del teclado&#10;&#10;DISPAROS DEL JUEGO&#10;Agua -&gt; Disparaste a una casilla vacía. Aparecerá una X en el tablero. El turno pasa al &#10;oponente.&#10;Tocado -&gt; Acertaste una parte de un barco enemigo que ocupa más de una casilla. Se &#10;marca como tocado y puedes volver a disparar.&#10;Hundido -&gt; Si destruyes todas las partes de un barco enemigo (incluyendo fragatas de &#10;una sola casilla), este será hundido. Se mostrará completo con una marca. Puedes seguir &#10;disparando, salvo que hayas hundido toda la flota enemiga.&#10;&#10;COMO PUEDES GANAR?????&#10;Ganas la partida cuando logras hundir todos los barcos del oponente antes de que él &#10;hunda los tuyos.&#10;&#10;BUENA SUERTE MI CAPITAN!!!!!!!!!!&#10;">
+         <VBox.margin>
+            <Insets left="40.0" right="40.0" />
+         </VBox.margin>
+         <font>
+            <Font name="Arial" size="12.0" />
+         </font>
+      </TextArea>
+   </children>
+</VBox>
