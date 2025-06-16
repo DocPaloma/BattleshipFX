@@ -29,7 +29,7 @@
          <font>
             <Font name="Bernard MT Condensed" size="16.0" />
          </font></Button>
-      <Button mnemonicParsing="false" style="-fx-background-color: #89CFF0; -fx-background-radius: 8px; -fx-border-color: black; -fx-border-radius: 8px; -fx-border-width: 2px;" text="INSTRUCCIONES" translateY="-65.0">
+      <Button mnemonicParsing="false" onAction="#onActionBotonInstrucciones" style="-fx-background-color: #89CFF0; -fx-background-radius: 8px; -fx-border-color: black; -fx-border-radius: 8px; -fx-border-width: 2px;" text="INSTRUCCIONES" translateY="-65.0">
          <font>
             <Font name="Bernard MT Condensed" size="16.0" />
          </font></Button>

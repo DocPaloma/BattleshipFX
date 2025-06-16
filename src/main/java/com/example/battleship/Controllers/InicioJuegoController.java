@@ -2,7 +2,7 @@ package com.example.battleship.Controllers;
 
 import com.example.battleship.Models.AlertaIniciarJuego;
 import com.example.battleship.Models.JugadorPersona;
-import com.example.battleship.Views.JuegoBatallaNavalView;
+import com.example.battleship.Views.InstruccionesView;
 import com.example.battleship.Views.PantallaJugadorView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -71,5 +71,11 @@ public class InicioJuegoController {
         } else{
             labelMensaje.setText("Decidiste no iniciar el juego");
         }
+    }
+
+    @FXML
+    void onActionBotonInstrucciones(ActionEvent event) throws IOException {
+        InstruccionesView instruccionesView = InstruccionesView.getInstance();
+        instruccionesView.show();
     }
 }
