@@ -5,6 +5,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,6 +16,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+
+import java.util.List;
 
 /**
  * This class controls and visually updates the JuegoBatallaNavalView interface based
@@ -121,12 +125,26 @@ public class JuegoBatallaNavalController implements Observer {
 
                 // Verifica si hay un barco en la celda en la que se encuentra
                 if(jugador.getTablero().hayBarco(fila, columna)){
-                    String ruta = jugador.getTablero().getRutaImagen(fila, columna); // Se obtiene la ruta del barco
+                    Barco barco = jugador.getTablero().getBarco(fila, columna);
+                    int tamano = barco.getTamano();
 
-                    ImagePattern patron = new ImagePattern(new Image(getClass().getResourceAsStream(ruta)));
-                    Rectangle barcoRectangle = new Rectangle(40, 40);
-                    barcoRectangle.setFill(patron);
-                    celda.getChildren().add(barcoRectangle);
+                    if(barco.esInicio(fila,columna)){
+                        BarcoVisual figura = barco.getFigura();
+                        figura.setVertical(barco.esVerical());
+
+                        List<Node> figuras = figura.crearFiguras();
+                        Group group = new Group(figuras);
+
+                        if(barco.esVerical()){
+                            group.setTranslateY(45 * (tamano - 1) / 2.0);
+                        }else {
+                            group.setRotate(90); // Rotar para que sea horizontal
+                            group.setTranslateX(45 * (tamano - 1) / 2.0);
+                            //barcoGroup.setTranslateX(70);
+                        }
+
+                        celda.getChildren().add(group);
+                    }
                 }
 
                 gridPaneTableroJugador2.add(celda, columna, fila); // Se añade la celda creada al gridPane con su posicion
@@ -145,6 +163,7 @@ public class JuegoBatallaNavalController implements Observer {
     // verifica donde hay barcos y los agrega como rectangle, le agrega una imagen, lo guarda en la celda y
     // luego lo agrega en el tablero (GridPane)
     private void mostrarTableroMaquina(){
+        System.out.println("Mostrando tablero de la máquina...");
         gridPaneTableroMaquina.getChildren().clear(); // Limpia el tablero y coloca los barcos que estan para mantenerlo actualizado
 
         for(int fila = 0; fila < 10; fila++){
@@ -155,12 +174,40 @@ public class JuegoBatallaNavalController implements Observer {
                 celda.setStyle("-fx-border-color: black;");
 
                 if(jugadorMaquina.getTablero().hayBarco(fila, columna)){
+                    /**
                     String ruta = jugadorMaquina.getTablero().getRutaImagen(fila, columna);
-
                     ImagePattern patron = new ImagePattern(new Image(getClass().getResourceAsStream(ruta)));
                     Rectangle barcoRectangle = new Rectangle(40, 40);
                     barcoRectangle.setFill(patron);
                     celda.getChildren().add(barcoRectangle);
+                     **/
+                    Barco barco = jugadorMaquina.getTablero().getBarco(fila, columna);
+                    int tamano = barco.getTamano();
+
+                    // Solo muestra la figura una vez por barco y es en la inicial
+                    if(barco.esInicio(fila,columna)){
+                        System.out.println("Mostrando barco en [" + fila + "," + columna + "]");
+                        BarcoVisual figura = barco.getFigura();
+                        figura.setVertical(barco.esVerical());
+
+                        if (barco != null && barco.esInicio(fila, columna)) {
+                            System.out.println("✔ " + barco.getNombre() + " tiene figura: " + (barco.getFigura() != null));
+                        }
+
+                        List<Node> figuras = figura.crearFiguras();
+                        Group group = new Group(figuras);
+
+
+                        if(barco.esVerical()){
+                            group.setTranslateY(45 * (tamano - 1) / 2.0);
+                        }else {
+                            group.setRotate(90); // Rotar para que sea horizontal
+                            group.setTranslateX(45 * (tamano - 1) / 2.0);
+                            //barcoGroup.setTranslateX(70);
+                        }
+
+                        celda.getChildren().add(group);
+                    }
                 }
 
                 gridPaneTableroMaquina.add(celda, columna, fila);
@@ -195,27 +242,18 @@ public class JuegoBatallaNavalController implements Observer {
                     if(jugadorMaquina.getTablero().getBarco(fila, columna)!=null){
 
                         // En esta parte se crea la imagen de una bomba que seria un impacto al barco
-                       Image bomba = new Image(getClass().getResource("/com/example/battleship/Images/bomba.png").toExternalForm());
-                       ImageView image = new ImageView(bomba);
-                       image.setFitHeight(40);
-                       image.setFitWidth(40);
-                       celda.getChildren().add(image);
+                       FiguraBomba bomba = new FiguraBomba();
+                       celda.getChildren().addAll(bomba.crearObjeto());
 
 
                         // Aqui se crea la imagen de fuego si el barco fue hundido, lo pone encima de la bomba
-                        Image fuego = new Image(getClass().getResource("/com/example/battleship/Images/fuego.png").toExternalForm()); // asegúrate que sea .gif o .png
-                        ImageView imageFuego = new ImageView(fuego);
-                        imageFuego.setFitHeight(35);
-                        imageFuego.setFitWidth(35);
-                        celda.getChildren().add(imageFuego); // Lo añade encima de la bomba
+                        FiguraFuego fuego = new FiguraFuego();
+                        celda.getChildren().addAll(fuego.crearObjeto());
                     } else{
 
                         // De lo contrario, sino hay un barco en esa posicion lo que pondria como imagen de disparo seria una X
-                        Image X = new Image(getClass().getResource("/com/example/battleship/Images/X.png").toExternalForm());
-                        ImageView image = new ImageView(X);
-                        image.setFitHeight(40);
-                        image.setFitWidth(40);
-                        celda.getChildren().add(image);
+                        FiguraX X =  new FiguraX();
+                        celda.getChildren().addAll(X.crearObjeto());
                     }
                 }
 
@@ -314,15 +352,19 @@ public class JuegoBatallaNavalController implements Observer {
     // Este metodo muestra una imagen de una bomba en una celda especifica del tabllero dependiendo de a
     // quien le pertenezca el tablero
     private void mostrarBomba(int fila, int columna, boolean esMaquina){
-        Image bomba = new Image(getClass().getResource("/com/example/battleship/Images/bomba.png").toExternalForm());
-        ImageView view = new ImageView(bomba);
-        view.setFitHeight(40);
-        view.setFitWidth(40);
+        double cuadricula = 45;
+
+        FiguraBomba bomba = new FiguraBomba();
+        List<Node> formaBomba = bomba.crearObjeto();
+
+        Group groupBomba = new Group(formaBomba);
+        groupBomba.setTranslateX(columna * cuadricula);
+        groupBomba.setTranslateY(fila * cuadricula);
         // Si disparo jugadorPersona es en el tablero de jugadorMaquina, sino seria en el tablero de jugadorPersona
         if(esMaquina){
-            celdasJugadorMaquina[fila][columna].getChildren().add(view);
+            gridPaneTableroMaquina.getChildren().add(groupBomba);
         } else{
-            celdasJugadorPersona[fila][columna].getChildren().add(view);
+            gridPaneTableroJugador2.getChildren().add(groupBomba);
         }
     }
 
@@ -338,14 +380,18 @@ public class JuegoBatallaNavalController implements Observer {
     // Este metodo muestra una imagen de una X en una celda especifica del tablero dependiendo de a
     // quien pertenezca el tablero
     private void mostrarX(int fila, int columna,  boolean esMaquina){
-        Image x = new Image(getClass().getResource("/com/example/battleship/Images/X.png").toExternalForm());
-        ImageView view = new ImageView(x);
-        view.setFitHeight(40);
-        view.setFitWidth(40);
+        double cuadricula = 45;
+
+        FiguraX X = new FiguraX();
+        List<Node> formaX = X.crearObjeto();
+
+        Group groupX = new Group(formaX);
+        groupX.setTranslateX(columna * cuadricula);
+        groupX.setTranslateY(fila * cuadricula);
         if(esMaquina){
-            celdasJugadorMaquina[fila][columna].getChildren().add(view);
+            gridPaneTableroMaquina.getChildren().add(groupX);
         } else{
-            celdasJugadorPersona[fila][columna].getChildren().add(view);
+            gridPaneTableroJugador2.getChildren().add(groupX);
         }
     }
 
@@ -360,29 +406,31 @@ public class JuegoBatallaNavalController implements Observer {
     // Este metodo muestra una imagen de fuego y las pone en cada celda del tamaño del barco en el tablero
     // del jugador a quien le pertenezca
     private void mostrarFuego(Barco barco, Tablero tablero){
-        Image fuego  = new Image(getClass().getResource("/com/example/battleship/Images/fuego.png").toExternalForm());
 
         int filaInicio = barco.getFila();
         int columnaInicio = barco.getColumna();
         boolean vertical = barco.esVerical();
         int tamano = barco.getTamano();
 
+        double cuadricula = 45; // Tamaño de celda
+
         for(int i = 0; i < tamano; i++){
             int fila = filaInicio + (vertical ? i : 0);
             int columna = columnaInicio + (vertical ? 0 : i);
 
-            StackPane celda;
-            if(tablero == jugadorMaquina.getTablero()){
-                celda = celdasJugadorMaquina[fila][columna]; // Barco de la maquina hundido
-            } else{
-                celda = celdasJugadorPersona[fila][columna]; // Barco del jugador hundido
-            }
+            FiguraFuego fuego = new FiguraFuego();
+            List<Node> formaFuego = fuego.crearObjeto();
 
-            celda.getChildren().clear();
-            ImageView  view = new ImageView(fuego);
-            view.setFitHeight(40);
-            view.setFitWidth(40);
-            celda.getChildren().add(view);
+            Group fuegoGroup = new Group(formaFuego);
+            fuegoGroup.setTranslateX(columna * cuadricula);
+            fuegoGroup.setTranslateY(fila * cuadricula);
+
+
+            if(tablero == jugadorMaquina.getTablero()){
+                gridPaneTableroMaquina.getChildren().add(fuegoGroup); // Barco de la maquina hundido
+            } else{
+                gridPaneTableroJugador2.getChildren().add(fuegoGroup); // Barco del jugador hundido
+            }
         }
     }
 

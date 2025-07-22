@@ -4,6 +4,8 @@ import com.example.battleship.Models.*;
 import com.example.battleship.Views.JuegoBatallaNavalView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,6 +20,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * This class keeps the PantallaJugadorView interface updated according to the interaction of jugadorPersona
@@ -46,6 +49,7 @@ public class PantallaJugadorController {
     private JugadorPersona jugadorPersona;
     private JugadorMaquina jugadorMaquina;
     private Barco barcoSeleccionado;
+    private BarcoVisual barcoVisual;
     private ImageView barcoSeleccionadoImageView; // para modificar visualmente la imagen del barco que se puso, ponerla trasparente
     private StackPane barcoVisualSeleccionado;
     private String rutaImagenseleccionada;
@@ -101,6 +105,9 @@ public class PantallaJugadorController {
 
                         // Si el barco se coloco lo que hace es añadirlo visualmente
                         if(colocarBarco){
+                            barcoSeleccionado.setPosicionInicio(filaSeleccionada, columnaSeleccionada);
+                            barcoSeleccionado.setFigura(barcoVisual);
+
                             agregarBarcoComoFigura2D(filaSeleccionada, columnaSeleccionada); // Lo crea como figura 2D apartir de una imagen
                             jugadorPersona.getTablero().imprimirTablero();
                             barcoSeleccionado = null; // Borra el barco anteriormente seleccionado para poder seleccionar otro y evitar seguir usando ese
@@ -119,6 +126,7 @@ public class PantallaJugadorController {
      */
     // Este metodo carga las imagenes de los barcos y las pasa al metodo crearImagenesBarcos para que las
     // añada al FlowPane
+    /**
     private void cargarImagenesBarco(){
         // Cargar las 4 imagenes de las fragatas
         crearImagenesBarcos("/com/example/battleship/Images/fragata1.png", "fragata1", 1);
@@ -138,6 +146,23 @@ public class PantallaJugadorController {
         // Cargar la imagen del portaAvion
         crearImagenesBarcos("/com/example/battleship/Images/portaAviones.png", "portaAviones", 4);
     }
+     **/
+
+    private void cargarImagenesBarco(){
+        crearFiguraBarcoEnFlowPane("fragata");
+        crearFiguraBarcoEnFlowPane("fragata");
+        crearFiguraBarcoEnFlowPane("fragata");
+        crearFiguraBarcoEnFlowPane("fragata");
+
+        crearFiguraBarcoEnFlowPane("destructor");
+        crearFiguraBarcoEnFlowPane("destructor");
+        crearFiguraBarcoEnFlowPane("destructor");
+
+        crearFiguraBarcoEnFlowPane("submarino");
+        crearFiguraBarcoEnFlowPane("submarino");
+
+        crearFiguraBarcoEnFlowPane("portaaviones");
+    }
 
 
     /**
@@ -150,6 +175,7 @@ public class PantallaJugadorController {
      */
     // Este metodo crea visualmente una imagen de barco segun la ruta que se le pase, la agrega a un FlowPane y
     // le asigna eventos para que el usuario pueda seleccionarla y añadirla al tablero
+    /**
     private void crearImagenesBarcos(String ruta, String nombre, int tamano) {
         Image image = new Image(getClass().getResource(ruta).toExternalForm()); // Carga la imagen con el parametro ruta que le pasan
         ImageView imagenBarco = new ImageView(image); // Carga la imagen y la guarda en un ImageView
@@ -173,6 +199,22 @@ public class PantallaJugadorController {
 
         // agrega la imagen al contenedor
         flowPaneContenedorBarcos.getChildren().add(imagenBarco); // Se añade la imagen del barco en el FlowPane para que se pueda ver visualmente en el contenedor
+    }**/
+
+    // Este metodo reemplaza crearImagenesBarcos
+    private void crearFiguraBarcoEnFlowPane(String tipoBarco){
+        BarcoVisual figura = BarcoVisualFactory.crearBarco(tipoBarco);
+        Group barcoGroup = new Group();
+        barcoGroup.getChildren().addAll(figura.crearFiguras());
+
+        barcoGroup.setOnMouseClicked(e -> {
+            barcoSeleccionado = BarcoFactory.crearBarco(tipoBarco, null);
+            barcoVisual =  BarcoVisualFactory.crearBarco(tipoBarco);
+            barcoSeleccionado.setFigura(barcoVisual); // Asocia la figura al barco
+            gridPaneTableroJugador.requestFocus(); // Para escuchar cuando se presione la R
+            barcoGroup.setOpacity(0);
+        });
+        flowPaneContenedorBarcos.getChildren().add(barcoGroup);
     }
 
 
@@ -186,27 +228,26 @@ public class PantallaJugadorController {
     // Este metodo agrega la imagen seleccionada en el FlowPane al tablero pero la transforma a figura 2D
     // mediante rectangle, la posiciona en las coordenadas seleccionadas y la extiende segun el tamaño del barco
     private void agregarBarcoComoFigura2D(int fila, int columna) {
-        int tamano = barcoSeleccionado.getTamano(); // Se obtiene el tamaño del barco
-        boolean vertical = barcoSeleccionado.esVerical(); // Se obtiene la orientacion del barco
+        int tamano = barcoSeleccionado.getTamano();
+        boolean vertical = barcoSeleccionado.esVerical();
 
-        int ancho = vertical ? 45 : 45 * tamano; // Se calcula su ancho segun su orientacion
-        int alto = vertical ? 45 * tamano : 45; // Se calcula su alto segun su orientacion
+        List<Node> figuras = barcoVisual.crearFiguras();
 
-        // Carga la imagen del barco desde la ruta guardada con ImagePattern que es el que permite colocar la imagen encima del rectangulo
-        ImagePattern patron = new ImagePattern(new Image(getClass().getResourceAsStream(rutaImagenseleccionada)));
+        // Agrupamos todas las figuras para que se puedan mover juntas
+        Group barcoGroup = new Group();
+        barcoGroup.getChildren().addAll(figuras);
 
-        Rectangle barcoRect = new Rectangle(ancho, alto); // Se crea la figura 2D rectangle con el ancho y alto calculados
-        barcoRect.setFill(patron); // Se le añade la imagen
-        barcoRect.setStroke(Color.BLACK); // Se le da un contorno color negro
-
+        // Ajustar la posición visual del grupo para que parezca anclado a la celda seleccionada
         if (vertical) {
-            barcoRect.setTranslateY((alto - 45) / 2.0); // Esto ya está bien para vertical
+            barcoGroup.setTranslateY(45 * (tamano - 1) / 2.0);
         } else {
-            barcoRect.setTranslateX(0); // Esta línea es la que ajusta horizontalmente
+            barcoGroup.setRotate(90); // Rotar para que sea horizontal
+            barcoGroup.setTranslateX(45 * (tamano - 1) / 2.0);
+            //barcoGroup.setTranslateX(70);
         }
 
-        StackPane celdaInicial = celdas[fila][columna]; // Obtiene la celda inicial que se selecciono para expandir el rectangles desde esas coordenadas
-        celdaInicial.getChildren().add(barcoRect); // Añade el rectangulo a la celda
+        StackPane celdaInicial = celdas[fila][columna];
+        celdaInicial.getChildren().add(barcoGroup);
     }
 
 

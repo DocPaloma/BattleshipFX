@@ -22,6 +22,7 @@ public class Barco {
     private String rutaImagen;
     private int filaInicio;
     private int columnaInicio;
+    private BarcoVisual figura;
 
 
     /**
@@ -46,13 +47,13 @@ public class Barco {
      *
      * @param nombre
      * @param tamano
-     * @param rutaImagen
+     * @param figura
      */
     // Se creo un segundo constructor principalmente para JugadorMaquina cuando crea su estrategia de manera aleatoria
-    public Barco(String nombre, int tamano, String rutaImagen) {
+    public Barco(String nombre, int tamano, BarcoVisual figura) {
         this.nombre = nombre;
         this.tamano = tamano;
-        this.rutaImagen = rutaImagen;
+        this.figura =  figura;
     }
 
     /**
@@ -174,9 +175,18 @@ public class Barco {
         this.columnaInicio = columna;
     }
 
-    /**
+
     public boolean esInicio(int fila, int columna) {
         return this.filaInicio == fila && this.columnaInicio == columna;
     }
-     **/
+
+
+
+    public void setFigura(BarcoVisual figura){
+        this.figura = figura;
+    }
+
+    public BarcoVisual getFigura(){
+        return figura;
+    }
 }

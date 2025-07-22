@@ -15,7 +15,6 @@ public class BarcoFactory {
      * Static method to create a ship based on its name
      *
      * @param tipo
-     * @param rutaImagen
      * @return
      */
     // Este metodo es estatico para no necesitar crear un objeto BarcoFactory para usarlo
@@ -23,10 +22,10 @@ public class BarcoFactory {
         int tamano; // Variable para el tamaño del barco
         switch (tipo){
             // Dependiendo el nombre le asigna un tamaño
-            case "fragata1", "fragata2",  "fragata3", "fragata4" -> tamano = 1;
-            case "destructor1", "destructor2", "destructor3" -> tamano = 2;
-            case "submarino1", "submarino2" -> tamano = 3;
-            case "portaAviones" -> tamano = 4;
+            case "fragata" -> tamano = 1;
+            case "destructor" -> tamano = 2;
+            case "submarino" -> tamano = 3;
+            case "portaaviones" -> tamano = 4;
             default -> throw new IllegalArgumentException("Tipo de barco desconocido: " + tipo);
         }
 

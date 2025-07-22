@@ -109,19 +109,45 @@ public class JugadorMaquina extends Jugador {
     private List<Barco> crearListaBarcosConImagenes(){
         List<Barco> barcosDisponibles = new ArrayList<>();
 
-        barcosDisponibles.add(new Barco("fragata1", 1, "/com/example/battleship/Images/fragata1.png"));
-        barcosDisponibles.add(new Barco("fragata2", 1, "/com/example/battleship/Images/fragata2.png"));
-        barcosDisponibles.add(new Barco("fragata3", 1, "/com/example/battleship/Images/fragata3.png"));
-        barcosDisponibles.add(new Barco("fragata4", 1, "/com/example/battleship/Images/fragata4.png"));
+        Barco barco1 = new Barco("fragata", 1);
+        barco1.setFigura(new FiguraFragata()); // Asignar figura
+        barcosDisponibles.add(barco1);
 
-        barcosDisponibles.add(new Barco("destructor1", 2, "/com/example/battleship/Images/destructor1.png"));
-        barcosDisponibles.add(new Barco("destructor2", 2, "/com/example/battleship/Images/destructor2.png"));
-        barcosDisponibles.add(new Barco("destructor3", 2, "/com/example/battleship/Images/destructor3.png"));
+        Barco barco2 = new Barco("fragata", 1);
+        barco2.setFigura(new FiguraFragata());
+        barcosDisponibles.add(barco2);
 
-        barcosDisponibles.add(new Barco("submarino1", 3, "/com/example/battleship/Images/submarino1.png"));
-        barcosDisponibles.add(new Barco("submarino2", 3, "/com/example/battleship/Images/submarino2.png"));
+        Barco barco3 = new Barco("fragata", 1);
+        barco3.setFigura(new FiguraFragata());
+        barcosDisponibles.add(barco3);
 
-        barcosDisponibles.add(new Barco("portaAviones", 4, "/com/example/battleship/Images/portaAviones.png"));
+        Barco barco4 = new Barco("fragata", 1);
+        barco4.setFigura(new FiguraFragata());
+        barcosDisponibles.add(barco4);
+
+        Barco destructor1 = new Barco("destructor", 2);
+        destructor1.setFigura(new FiguraDesctructor());
+        barcosDisponibles.add(destructor1);
+
+        Barco destructor2 = new Barco("destructor", 2);
+        destructor2.setFigura(new FiguraDesctructor());
+        barcosDisponibles.add(destructor2);
+
+        Barco destructor3 = new Barco("destructor", 2);
+        destructor3.setFigura(new FiguraDesctructor());
+        barcosDisponibles.add(destructor3);
+
+        Barco submarino1 = new Barco("submarino", 3);
+        submarino1.setFigura(new FiguraSubmarino());
+        barcosDisponibles.add(submarino1);
+
+        Barco submarino2 = new Barco("submarino", 3);
+        submarino2.setFigura(new FiguraSubmarino());
+        barcosDisponibles.add(submarino2);
+
+        Barco portaAviones = new Barco("portaAviones", 4);
+        portaAviones.setFigura(new FiguraPortaAviones());
+        barcosDisponibles.add(portaAviones);
         return barcosDisponibles;
     }
 
