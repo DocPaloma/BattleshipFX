@@ -12,6 +12,8 @@ package com.example.battleship.Models;
 // puede disparar al enemigo y puede darse cuenta si se queda sin barcos
 public class JugadorPersona extends  Jugador {
 
+    private int contTurno2 = 0;
+
     /**
      * Constructor that calls the parent class constructor using super
      *
@@ -33,6 +35,7 @@ public class JugadorPersona extends  Jugador {
     @Override
     public boolean disparar(Tablero enemigo, int fila, int columna) {
         Barco resultado = enemigo.recibirDisparo(fila, columna);
+        //botonTurno();
         return resultado != null;
     }
 
@@ -44,4 +47,11 @@ public class JugadorPersona extends  Jugador {
     public boolean zeroBarcos(){
         return getTablero().zeroBarcos();
     }
+
+    /**
+    public int botonTurno(){
+        contTurno2++;
+        return contTurno2;
+    }
+     **/
 }

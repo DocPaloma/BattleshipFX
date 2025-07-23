@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -57,6 +58,11 @@ public class JuegoBatallaNavalController implements Observer {
 
     @FXML
     private Label labelBarcosP;
+
+    @FXML
+    private Button botonMostrarTableroMaquina;
+
+    private int cont = 0;
 
     /**
      * Saves and updates the JugadorPersona instance and keeps the board current
@@ -207,6 +213,7 @@ public class JuegoBatallaNavalController implements Observer {
                         }
 
                         celda.getChildren().add(group);
+                        //cont++;
                     }
                 }
 
@@ -287,6 +294,12 @@ public class JuegoBatallaNavalController implements Observer {
                     if(funcionamientoJuego.getTurnoJugador() && !funcionamientoJuego.juegoTerminado()){
                         funcionamientoJuego.disparoSegunTurno(filaFinal, columnaFinal); // jugadorPersona dispara en las coordenadas seleccionadas
 
+                        // Cuando sea el segundo turno lo que va a hacer es ocultar el boton para no visualizar la estrategia de la maquina
+                        if (funcionamientoJuego.getTurno() >= 1) {
+                            botonMostrarTableroMaquina.setVisible(false);
+                            botonMostrarTableroMaquina.setManaged(false); // Oculta sin dejar espacio
+                        }
+
                         // Para saber si es turno de la maquina
                         if(!funcionamientoJuego.getTurnoJugador() && !funcionamientoJuego.juegoTerminado()){
                             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), e ->{ // Espera 2 segundos para disparar
@@ -295,6 +308,7 @@ public class JuegoBatallaNavalController implements Observer {
                                 System.out.println("Coor fila " + fila2);
                                 int columna2 = coordenadasUsadas[1];
                                 System.out.println("Coor columna " + columna2);
+                                //cont++;
                             }));
                             timeline.setCycleCount(1);
                             timeline.play(); // Inicia la ejecucion
@@ -321,8 +335,10 @@ public class JuegoBatallaNavalController implements Observer {
             return;
         }
 
+
         // Limpiar completamente antes de agregar nuevas celdas
         gridPaneTableroMaquina.getChildren().clear();
+
 
         if (tableroMaquinaVisible) {
             tableroJugadorMaquinaDisparos();
@@ -331,6 +347,7 @@ public class JuegoBatallaNavalController implements Observer {
         }
 
         tableroMaquinaVisible = !tableroMaquinaVisible; // Cambia el valor booleano
+
     }
 
 

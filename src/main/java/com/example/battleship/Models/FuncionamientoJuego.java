@@ -17,6 +17,8 @@ public class FuncionamientoJuego {
     private int barcosP = 10;
     private int barcosM = 10;
 
+    private int turno = 0;
+
 
     /**
      * Constructor receives two objects which are both players, and says that the first turn is for jugadorPersona
@@ -48,6 +50,8 @@ public class FuncionamientoJuego {
         // Disparo cuando es el turno del jugadorPersona
         if (turnoJugador) {
             aciertoDisparo = jugadorPersona.disparar(jugadorMaquina.getTablero(), fila, columna);
+
+            turno++;
             //ultimoTableroJugado = jugadorMaquina.getTablero();
 
             // Si falla entonces debe de cambiar turno
@@ -59,6 +63,7 @@ public class FuncionamientoJuego {
 
             // Disparo cuando es el turno de jugadorMaquina
         } else {
+            //contTurno();
             int[] coor; // Variable en donde se guardan las coordenadas escogidas por la maquina aleatoriamente
             // Se usa un Do-while para que la maquina dispare hasta que falle
             do {
@@ -69,6 +74,8 @@ public class FuncionamientoJuego {
                 System.out.println("Jugador Máquina disparó en: (" +
                         coor[0] + ", " +
                         coor[1] + ")");
+
+                turno++;
 
                 //ultimoTableroJugado = jugadorPersona.getTablero();
             } while (aciertoDisparo);
@@ -93,6 +100,7 @@ public class FuncionamientoJuego {
     // Este metodo cambia el valor para que juegue el proximo jugador
     public void cambiarTurno() {
         turnoJugador = !turnoJugador;
+        //contTurno();
     }
 
     /**
@@ -146,6 +154,15 @@ public class FuncionamientoJuego {
             barcosM--;
         }
         return barcosM;
+    }
+
+    public int contTurno(){
+        turno++;
+        return turno;
+    }
+
+    public int getTurno(){
+        return turno;
     }
 
 

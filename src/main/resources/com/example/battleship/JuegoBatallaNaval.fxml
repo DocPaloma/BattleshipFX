@@ -14,7 +14,7 @@
    <children>
       <VBox alignment="CENTER" prefHeight="600.0" prefWidth="124.0" style="-fx-border-color: white; -fx-border-width: 3px;">
          <children>
-            <Button mnemonicParsing="false" onAction="#onActionBotonMostrarTableroMaquina" style="-fx-background-color: #89CFF0; -fx-background-radius: 8px; -fx-border-color: black; -fx-border-radius: 8px; -fx-border-width: 2px;" text="VER!!" translateY="55.0">
+            <Button fx:id="botonMostrarTableroMaquina" mnemonicParsing="false" onAction="#onActionBotonMostrarTableroMaquina" style="-fx-background-color: #89CFF0; -fx-background-radius: 8px; -fx-border-color: black; -fx-border-radius: 8px; -fx-border-width: 2px;" text="VER!!" translateY="55.0">
                <font>
                   <Font name="Bernard MT Condensed" size="14.0" />
                </font></Button>
