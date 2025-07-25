@@ -541,6 +541,7 @@ public class JuegoBatallaNavalController implements Observer {
     // Este metodo guarda una referencia logica de la clase
     public void setFuncionamientoJuego(FuncionamientoJuego funcionamientoJuego) {
         this.funcionamientoJuego = funcionamientoJuego;
+
     }
 
 
@@ -575,6 +576,9 @@ public class JuegoBatallaNavalController implements Observer {
             hideGameView();
             returnMenu();
         }
+        else {
+
+        }
 
     }
 
@@ -591,7 +595,7 @@ public class JuegoBatallaNavalController implements Observer {
      * Hides the game window
      */
     public void hideGameView() {
-        Stage gameStage = (Stage) leaveGameButton.getScene().getWindow();
+        Stage gameStage = (Stage) labelBarcosM.getScene().getWindow();
         gameStage.hide();
     }
 
@@ -601,9 +605,19 @@ public class JuegoBatallaNavalController implements Observer {
      * @param loadedGame: game from the load file
      */
     public void restoreGameState(FuncionamientoJuego loadedGame) {
-        updatePlayers(loadedGame.getPersonaPlayer(), loadedGame.getCPUPlayer());
-        mostrarTableroJugador();
-        mostrarNombreJugador2();
+        setFuncionamientoJuego(loadedGame);
+        updatePlayers(loadedGame.getPersonaPlayer(),loadedGame.getCPUPlayer());
+        tableroJugadorDisparos();
+        tableroJugadorMaquinaDisparos();
+        if (!funcionamientoJuego.juegoTerminado() && !funcionamientoJuego.juegoTerminado()) {
+            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), e -> {
+                int[] coords = funcionamientoJuego.disparoSegunTurno(-1, -1);
+                tableroJugadorMaquinaDisparos();
+            }));
+            timeline.setCycleCount(1);
+            timeline.play();
+        }
+        System.out.println("¿Turno jugador cargado?:" + funcionamientoJuego.getTurnoJugador());
     }
 
 
@@ -612,9 +626,59 @@ public class JuegoBatallaNavalController implements Observer {
      * @param player: human player
      * @param cpu: machine player
      */
-    private void updatePlayers(Jugador player, Jugador cpu) {
-        this.jugador = (JugadorPersona) player;
-        this.jugadorMaquina = (JugadorMaquina) cpu;
+    private void updatePlayers(JugadorPersona player, JugadorMaquina cpu) {
+        setJugadorMaquina(cpu);
+        setJugador(player);
+    }
+
+
+    private void tableroJugadorDisparos() {
+        gridPaneTableroJugador2.getChildren().clear();
+
+        for (int fila = 0; fila < 10; fila++) {
+            for (int columna = 0; columna < 10; columna++) {
+                StackPane celda = new StackPane();
+                celda.setPickOnBounds(true);
+                celda.setPrefSize(45, 45);
+                celda.setStyle("-fx-border-color: black;");
+
+                // Mostrar barcos del jugador
+                if (jugador.getTablero().hayBarco(fila, columna)) {
+                    Barco barco = jugador.getTablero().getBarco(fila, columna);
+                    if (barco.esInicio(fila, columna)) {
+                        BarcoVisual figura = barco.getFigura();
+                        figura.setVertical(barco.esVerical());
+                        Group group = new Group(figura.crearFiguras());
+
+                        if(barco.esVerical()) {
+                            group.setTranslateY(45 * (barco.getTamano() - 1) / 2.0);
+                        } else {
+                            group.setRotate(90);
+                            group.setTranslateX(45 * (barco.getTamano() - 1) / 2.0);
+                        }
+
+                        celda.getChildren().add(group);
+                    }
+                }
+
+                // Mostrar disparos recibidos
+                if(jugador.getTablero().huboDisparoAqui(fila, columna)) {
+                    if(jugador.getTablero().getBarco(fila, columna) != null) {
+                        FiguraBomba bomba = new FiguraBomba();
+                        celda.getChildren().addAll(bomba.crearObjeto());
+
+                        FiguraFuego fuego = new FiguraFuego();
+                        celda.getChildren().addAll(fuego.crearObjeto());
+                    } else {
+                        FiguraX x = new FiguraX();
+                        celda.getChildren().addAll(x.crearObjeto());
+                    }
+                }
+
+                gridPaneTableroJugador2.add(celda, columna, fila);
+                celdasJugadorPersona[fila][columna] = celda;
+            }
+        }
     }
 
 
