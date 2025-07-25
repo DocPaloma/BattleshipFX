@@ -2,6 +2,8 @@ package com.example.battleship.Models;
 
 import javafx.scene.image.Image;
 
+import java.io.Serializable;
+
 /**
  * This Barco class allows creating ships with a size, direction, and position
  *
@@ -10,7 +12,9 @@ import javafx.scene.image.Image;
  * @version 1.0
  */
 // Esta clase Barco permite crear barcos con un tamaño, sentido y posicion
-public class Barco {
+public class Barco implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private int tamano; // Para saber cuantas celdas ocupa {1,2,3,4}
     private boolean vertical; // Para saber si su orientacion es horizontal o vertical
@@ -18,7 +22,7 @@ public class Barco {
     private int columna;
     private String nombre;
     private int impactos = 0;
-    private Image image;
+    //private Image image;
     private String rutaImagen;
     private int filaInicio;
     private int columnaInicio;

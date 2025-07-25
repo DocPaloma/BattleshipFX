@@ -12,4 +12,6 @@ public class InstruccionesController {
         String imagenFondo = getClass().getResource("/com/example/battleship/Images/imagenFondo2.png").toExternalForm();
         vBoxPrincipal.setStyle("-fx-background-image: url('" + imagenFondo + "'); -fx-background-size: cover;");
     }
+
+
 }

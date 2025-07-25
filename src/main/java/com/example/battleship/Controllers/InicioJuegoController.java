@@ -1,14 +1,21 @@
 package com.example.battleship.Controllers;
 
 import com.example.battleship.Models.AlertaIniciarJuego;
+import com.example.battleship.Models.FuncionamientoJuego;
 import com.example.battleship.Models.JugadorPersona;
+import com.example.battleship.Models.LoadGameAlert;
 import com.example.battleship.Views.InstruccionesView;
+import com.example.battleship.Views.JuegoBatallaNavalView;
 import com.example.battleship.Views.PantallaJugadorView;
+import com.example.battleship.persistence.SaveManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -21,6 +28,8 @@ import java.io.IOException;
  */
 public class InicioJuegoController {
 
+    private String fileLoadRoute= "saves/savegame.dat";
+
     @FXML
     private TextField textFieldNombre;
 
@@ -29,6 +38,9 @@ public class InicioJuegoController {
 
     @FXML
     private VBox vBoxPrincipal;
+
+    @FXML
+    private Button loadButton;
 
     /**
      * This method is the first to be executed in this interface, it adds a background image
@@ -64,10 +76,13 @@ public class InicioJuegoController {
         boolean confirmacion = alert.mostrarAlertaDeConfirmacion
                 ("Alerta de iniciar juego", "Esta es una ventana de alerta", "Deseas iniciar el juego?");
         if(confirmacion){
+
             PantallaJugadorView pantallaJugadorView = PantallaJugadorView.getInstance();
+            //pantallaJugadorView.getController().resetWindow();
             pantallaJugadorView.getController().setJugador(jugadorPersona);
             pantallaJugadorView.getController().mostrarNombreJugador();
             pantallaJugadorView.show();
+            hideStartView();
         } else{
             labelMensaje.setText("Decidiste no iniciar el juego");
         }
@@ -78,4 +93,37 @@ public class InicioJuegoController {
         InstruccionesView instruccionesView = InstruccionesView.getInstance();
         instruccionesView.show();
     }
+
+    @FXML
+    void onActionLoadButton(ActionEvent event) throws IOException {
+        LoadGameAlert loadAlert = new LoadGameAlert();
+        boolean confirmation = loadAlert.mostrarAlertaDeConfirmacion(
+                "Alerta de cargar partida",
+                "This is a load alert",
+                "Deseas cargar la partida?"
+        );
+        if(confirmation){
+            FuncionamientoJuego state = SaveManager.loadGame(fileLoadRoute);
+
+            if (state != null){
+
+                JuegoBatallaNavalView juegoView = JuegoBatallaNavalView.getInstance();
+                JuegoBatallaNavalController controller = juegoView.getController();
+
+                controller.restoreGameState(state);
+                juegoView.show();
+                hideStartView();
+            }
+            else {
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Error al cargar partida");
+            }
+        }
+    }
+
+    public void hideStartView(){
+        Stage mainStage = (Stage) textFieldNombre.getScene().getWindow();
+        mainStage.hide();
+    }
+
 }

@@ -1,12 +1,16 @@
 package com.example.battleship.Controllers;
 
 import com.example.battleship.Models.*;
+import com.example.battleship.Views.InicioJuegoView;
+import com.example.battleship.persistence.SaveManager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,9 +19,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+import com.example.battleship.Controllers.InicioJuegoController;
 
+import java.io.IOException;
 import java.util.List;
+
+import static com.example.battleship.persistence.SaveManager.saveGame;
 
 /**
  * This class controls and visually updates the JuegoBatallaNavalView interface based
@@ -43,6 +52,8 @@ public class JuegoBatallaNavalController implements Observer {
 
     private boolean tableroMaquinaVisible = false;
 
+    private String fileRoute = "saves/savegame.dat";
+
     private JugadorPersona jugador;
     private JugadorMaquina jugadorMaquina;
 
@@ -57,6 +68,10 @@ public class JuegoBatallaNavalController implements Observer {
 
     @FXML
     private Label labelBarcosP;
+
+    @FXML
+    private Button leaveGameButton;
+
 
     /**
      * Saves and updates the JugadorPersona instance and keeps the board current
@@ -299,6 +314,7 @@ public class JuegoBatallaNavalController implements Observer {
                             timeline.setCycleCount(1);
                             timeline.play(); // Inicia la ejecucion
                         }
+                        saveGame(funcionamientoJuego, fileRoute);
                     }
                 });
             }
@@ -541,5 +557,67 @@ public class JuegoBatallaNavalController implements Observer {
         labelBarcosM.setText("maquina: 10");
         labelBarcosP.setText("persona: 10");
     }
+
+    /**
+     * This method makes that the player can return to the main menu
+     * @param event
+     * @throws IOException
+     */
+    @FXML
+    void onActionLeaveButton(ActionEvent event) throws IOException {
+        LeaveGameAlert alert = new  LeaveGameAlert();
+
+        boolean confirmation = alert.mostrarAlertaDeConfirmacion(
+                "Alerta de abandonar juego",
+                "This is an alert window",
+                "Quieres regresar a la pantalla de titulo?");
+        if (confirmation){
+            hideGameView();
+            returnMenu();
+        }
+
+    }
+
+    /**
+     * Method that returns and load the main menu window
+     * @throws IOException
+     */
+    private void returnMenu() throws IOException {
+        InicioJuegoView mainMenu = InicioJuegoView.getInstance();
+        mainMenu.show();
+    }
+
+    /**
+     * Hides the game window
+     */
+    public void hideGameView() {
+        Stage gameStage = (Stage) leaveGameButton.getScene().getWindow();
+        gameStage.hide();
+    }
+
+
+    /**
+     * loads the game data on the viewable part
+     * @param loadedGame: game from the load file
+     */
+    public void restoreGameState(FuncionamientoJuego loadedGame) {
+        updatePlayers(loadedGame.getPersonaPlayer(), loadedGame.getCPUPlayer());
+        mostrarTableroJugador();
+        mostrarNombreJugador2();
+    }
+
+
+    /**
+     * updates the information from the save file.
+     * @param player: human player
+     * @param cpu: machine player
+     */
+    private void updatePlayers(Jugador player, Jugador cpu) {
+        this.jugador = (JugadorPersona) player;
+        this.jugadorMaquina = (JugadorMaquina) cpu;
+    }
+
+
+
 
 }

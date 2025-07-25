@@ -7,10 +7,11 @@ import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FiguraSubmarino implements BarcoVisual{
+public class FiguraSubmarino implements BarcoVisual, Serializable {
 
     private boolean vertical = true;
 

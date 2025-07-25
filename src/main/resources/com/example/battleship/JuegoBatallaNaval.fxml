@@ -18,7 +18,7 @@
                <font>
                   <Font name="Bernard MT Condensed" size="14.0" />
                </font></Button>
-            <Button mnemonicParsing="false" style="-fx-background-color: #89CFF0; -fx-background-radius: 8px; -fx-border-color: black; -fx-border-radius: 8px; -fx-border-width: 2px;" text="Abandonar Juego" translateY="-20.0">
+            <Button fx:id="leaveGameButton" mnemonicParsing="false" onAction="#onActionLeaveButton" style="-fx-background-color: #89CFF0; -fx-background-radius: 8px; -fx-border-color: black; -fx-border-radius: 8px; -fx-border-width: 2px;" text="Abandonar Juego" translateY="-20.0">
                <font>
                   <Font name="Bernard MT Condensed" size="14.0" />
                </font></Button>

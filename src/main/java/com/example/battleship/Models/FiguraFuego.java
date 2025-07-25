@@ -6,10 +6,11 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FiguraFuego implements ObjetosVisualesInterface{
+public class FiguraFuego implements ObjetosVisualesInterface, Serializable {
     @Override
     public List<Node> crearObjeto() {
         List <Node> figuras = new ArrayList<>();

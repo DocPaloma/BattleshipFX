@@ -1,5 +1,7 @@
 package com.example.battleship.Models;
 
+import java.io.Serializable;
+
 /**
  * This class contains the game logic like turns, shots, ending, and winner
  *
@@ -8,7 +10,9 @@ package com.example.battleship.Models;
  * @version 1.0
  */
 // Esta clase contiene el funcionamiento del juego como los turnos, los disparos, finalizacion y ganador
-public class FuncionamientoJuego {
+public class FuncionamientoJuego implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private JugadorPersona jugadorPersona;
     private JugadorMaquina jugadorMaquina;
@@ -93,6 +97,7 @@ public class FuncionamientoJuego {
     // Este metodo cambia el valor para que juegue el proximo jugador
     public void cambiarTurno() {
         turnoJugador = !turnoJugador;
+
     }
 
     /**
@@ -149,29 +154,20 @@ public class FuncionamientoJuego {
     }
 
 
+    public JugadorMaquina getCPUPlayer(){
+        return jugadorMaquina;
+    }
+
+    public JugadorPersona getPersonaPlayer(){
+        return jugadorPersona;
+    }
 
     /**
-    public JugadorPersona getJugadorPersona() {
-        return this.jugadorPersona;
+     * method that resets the game data
+     */
+    public void restoreGameData(){
+        this.jugadorPersona = new JugadorPersona("Player");
+        this.jugadorMaquina = new JugadorMaquina("Maquina");
     }
-
-    public JugadorMaquina getJugadorMaquina() {
-        return this.jugadorMaquina;
-    }
-     **/
-
-
-    /**
-    public Tablero getUltimoTableroJugado() {
-        return this.ultimoTableroJugado;
-    }
-
-    public void disparoJugadorPersona(int fila, int columna) {
-        jugadorMaquina.getTablero().recibirDisparo(fila, columna);
-
-    }
-     **/
-
-
 
 }

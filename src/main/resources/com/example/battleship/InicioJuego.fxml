@@ -24,7 +24,6 @@
             <Font name="Bernard MT Condensed" size="14.0" />
          </font>
       </TextField>
-      <Label fx:id="labelMensaje" translateY="10.0" />
       <Button mnemonicParsing="false" onAction="#onActionBotonIniciar" style="-fx-background-color: #89CFF0; -fx-border-color: black; -fx-background-radius: 8px; -fx-border-radius: 8px; -fx-border-width: 2px;" text="INICIAR" translateY="-85.0">
          <font>
             <Font name="Bernard MT Condensed" size="16.0" />
@@ -33,5 +32,11 @@
          <font>
             <Font name="Bernard MT Condensed" size="16.0" />
          </font></Button>
+      <Button fx:id="loadButton" mnemonicParsing="false" onAction="#onActionLoadButton" style="-fx-background-color: #89CFF0; -fx-border-color: black; -fx-background-radius: 8px; -fx-border-radius: 8px; -fx-border-width: 2px;" text="CARGAR" translateY="-45.0">
+         <font>
+            <Font name="Bernard MT Condensed" size="16.0" />
+         </font>
+      </Button>
+      <Label fx:id="labelMensaje" translateY="10.0" />
    </children>
 </VBox>
