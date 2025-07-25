@@ -6,10 +6,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FiguraPortaAviones implements BarcoVisual{
+public class FiguraPortaAviones implements BarcoVisual, Serializable {
 
     private boolean vertical = true;
 

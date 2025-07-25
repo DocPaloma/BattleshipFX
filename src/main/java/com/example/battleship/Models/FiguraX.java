@@ -5,10 +5,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FiguraX implements ObjetosVisualesInterface{
+public class FiguraX implements ObjetosVisualesInterface, Serializable {
     @Override
     public List<Node> crearObjeto() {
         List<Node> figuras = new ArrayList<>();

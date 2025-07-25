@@ -1,5 +1,6 @@
 package com.example.battleship.Models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,9 @@ import java.util.List;
 // Esta clase representa el Tablero de ambos jugadores, cuadricula de 10x10 en donde se puede crear la estrategia
 // de barcos y se reciben disparos. Se extiende de Observable para que el tablero avise cuando interactuan con
 // una celda para que se muestre una imagen
-public class Tablero extends Observable{
+public class Tablero extends Observable implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public static final int tamano = 10; // El tablero sera de 10x10
 

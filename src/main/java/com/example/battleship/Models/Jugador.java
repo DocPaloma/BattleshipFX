@@ -1,5 +1,7 @@
 package com.example.battleship.Models;
 
+import java.io.Serializable;
+
 /**
  * This class represents the players, who have a name, a board, and can shoot
  *
@@ -8,7 +10,9 @@ package com.example.battleship.Models;
  * @version 1.0
  */
 // Esta clase representa a los jugadores los cuales tienen un nombre, tablero y disparan
-public abstract class Jugador {
+public abstract class Jugador implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String nombre;
     private Tablero tablero;

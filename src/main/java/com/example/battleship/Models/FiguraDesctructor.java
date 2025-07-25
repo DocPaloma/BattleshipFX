@@ -6,10 +6,11 @@ import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FiguraDesctructor implements BarcoVisual{
+public class FiguraDesctructor implements BarcoVisual, Serializable {
 
     private boolean vertical = true;
 

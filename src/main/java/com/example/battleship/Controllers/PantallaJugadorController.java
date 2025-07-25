@@ -18,6 +18,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -297,6 +299,7 @@ public class PantallaJugadorController {
             juegoBatallaNavalView.getController().alIniciarJuego();
 
             juegoBatallaNavalView.show();
+            hidePlayerView();
         }
     }
 
@@ -313,6 +316,11 @@ public class PantallaJugadorController {
      */
     public void mostrarNombreJugador(){
         labelNombreJugador.setText(jugadorPersona.getNombre());
+    }
+
+    public void hidePlayerView(){
+        Stage playerPlanningStage = (Stage) flowPaneContenedorBarcos.getScene().getWindow();
+        playerPlanningStage.hide();
     }
 
 }
