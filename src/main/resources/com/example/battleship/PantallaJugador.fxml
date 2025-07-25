@@ -27,14 +27,6 @@
                <font>
                   <Font name="Bernard MT Condensed" size="15.0" />
                </font></Button>
-            <Button mnemonicParsing="false" style="-fx-background-color: #89CFF0; -fx-background-radius: 8px; -fx-border-color: black; -fx-border-radius: 8px; -fx-border-width: 2px;" text="Abandonar">
-               <VBox.margin>
-                  <Insets top="120.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="Bernard MT Condensed" size="15.0" />
-               </font>
-            </Button>
          </children>
       </VBox>
       <VBox alignment="CENTER" prefHeight="600.0" prefWidth="15.0" style="-fx-border-color: white; -fx-border-width: 3px;" HBox.hgrow="ALWAYS">

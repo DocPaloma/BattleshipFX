@@ -170,4 +170,7 @@ public class FuncionamientoJuego implements Serializable {
         this.jugadorMaquina = new JugadorMaquina("Maquina");
     }
 
+    public void setTurnoJugador(boolean b) {
+        this.turnoJugador = b;
+    }
 }

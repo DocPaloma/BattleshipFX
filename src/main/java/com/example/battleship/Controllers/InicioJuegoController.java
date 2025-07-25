@@ -78,7 +78,7 @@ public class InicioJuegoController {
         if(confirmacion){
 
             PantallaJugadorView pantallaJugadorView = PantallaJugadorView.getInstance();
-            //pantallaJugadorView.getController().resetWindow();
+            pantallaJugadorView.getController().resetWindow();
             pantallaJugadorView.getController().setJugador(jugadorPersona);
             pantallaJugadorView.getController().mostrarNombreJugador();
             pantallaJugadorView.show();
