@@ -94,6 +94,7 @@ public class PantallaJugadorController {
             for (int columna = 0; columna < 10; columna++) {
                 StackPane celda = new StackPane(); // Las celdas se crean StackPane porque permite mucha flexibilidad visual para poner imagenes encima sin borrar la anteriror y que sea facil
                 celda.setPrefSize(45, 45);
+//                celda.setStyle("-fx-border-color: black;");
 
                 // Guarda la posicion de la celda
                 final int filaSeleccionada = fila;
@@ -318,9 +319,26 @@ public class PantallaJugadorController {
         labelNombreJugador.setText(jugadorPersona.getNombre());
     }
 
+    /**
+     * This method hides the window
+     */
     public void hidePlayerView(){
         Stage playerPlanningStage = (Stage) flowPaneContenedorBarcos.getScene().getWindow();
         playerPlanningStage.hide();
     }
 
+//    public void resetWindow() {
+//        jugadorPersona = new JugadorPersona("Jugador");
+//        flowPaneContenedorBarcos.getChildren().clear(); // Limpia los barcos en el panel lateral
+//        gridPaneTableroJugador.getChildren().clear();   // Limpia el tablero
+//        celdas = new StackPane[10][10];                 // Reinicia la matriz visual
+//        crearTableroVisual();                           // Vuelve a crear las celdas
+//        cargarImagenesBarco();                          // Carga de nuevo los barcos
+//        labelNombreJugador.setText("");                 // Limpia el nombre (si se muestra después)
+//        barcoSeleccionado = null;
+//        barcoVisual = null;
+//        barcoSeleccionadoImageView = null;
+//        barcoVisualSeleccionado = null;
+//        rutaImagenseleccionada = null;
+//    }
 }

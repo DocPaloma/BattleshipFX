@@ -97,6 +97,7 @@ public class FuncionamientoJuego implements Serializable {
     // Este metodo cambia el valor para que juegue el proximo jugador
     public void cambiarTurno() {
         turnoJugador = !turnoJugador;
+
     }
 
     /**
@@ -150,6 +151,23 @@ public class FuncionamientoJuego implements Serializable {
             barcosM--;
         }
         return barcosM;
+    }
+
+
+    public JugadorMaquina getCPUPlayer(){
+        return jugadorMaquina;
+    }
+
+    public JugadorPersona getPersonaPlayer(){
+        return jugadorPersona;
+    }
+
+    /**
+     * method that resets the game data
+     */
+    public void restoreGameData(){
+        this.jugadorPersona = new JugadorPersona("Player");
+        this.jugadorMaquina = new JugadorMaquina("Maquina");
     }
 
 }

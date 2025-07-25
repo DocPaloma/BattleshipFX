@@ -2,6 +2,7 @@ package com.example.battleship.Controllers;
 
 import com.example.battleship.Models.*;
 import com.example.battleship.Views.InicioJuegoView;
+import com.example.battleship.persistence.SaveManager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -313,6 +314,7 @@ public class JuegoBatallaNavalController implements Observer {
                             timeline.setCycleCount(1);
                             timeline.play(); // Inicia la ejecucion
                         }
+                        saveGame(funcionamientoJuego, fileRoute);
                     }
                 });
             }
@@ -556,6 +558,11 @@ public class JuegoBatallaNavalController implements Observer {
         labelBarcosP.setText("persona: 10");
     }
 
+    /**
+     * This method makes that the player can return to the main menu
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionLeaveButton(ActionEvent event) throws IOException {
         LeaveGameAlert alert = new  LeaveGameAlert();
@@ -563,23 +570,53 @@ public class JuegoBatallaNavalController implements Observer {
         boolean confirmation = alert.mostrarAlertaDeConfirmacion(
                 "Alerta de abandonar juego",
                 "This is an alert window",
-                "Quieres guardar antes de abandonar juego?");
+                "Quieres regresar a la pantalla de titulo?");
         if (confirmation){
-            saveGame(funcionamientoJuego, fileRoute);
             hideGameView();
             returnMenu();
         }
+
     }
 
+    /**
+     * Method that returns and load the main menu window
+     * @throws IOException
+     */
     private void returnMenu() throws IOException {
         InicioJuegoView mainMenu = InicioJuegoView.getInstance();
         mainMenu.show();
     }
 
+    /**
+     * Hides the game window
+     */
     public void hideGameView() {
         Stage gameStage = (Stage) leaveGameButton.getScene().getWindow();
         gameStage.hide();
     }
+
+
+    /**
+     * loads the game data on the viewable part
+     * @param loadedGame: game from the load file
+     */
+    public void restoreGameState(FuncionamientoJuego loadedGame) {
+        updatePlayers(loadedGame.getPersonaPlayer(), loadedGame.getCPUPlayer());
+        mostrarTableroJugador();
+        mostrarNombreJugador2();
+    }
+
+
+    /**
+     * updates the information from the save file.
+     * @param player: human player
+     * @param cpu: machine player
+     */
+    private void updatePlayers(Jugador player, Jugador cpu) {
+        this.jugador = (JugadorPersona) player;
+        this.jugadorMaquina = (JugadorMaquina) cpu;
+    }
+
 
 
 

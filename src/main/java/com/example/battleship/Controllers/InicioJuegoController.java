@@ -5,6 +5,7 @@ import com.example.battleship.Models.FuncionamientoJuego;
 import com.example.battleship.Models.JugadorPersona;
 import com.example.battleship.Models.LoadGameAlert;
 import com.example.battleship.Views.InstruccionesView;
+import com.example.battleship.Views.JuegoBatallaNavalView;
 import com.example.battleship.Views.PantallaJugadorView;
 import com.example.battleship.persistence.SaveManager;
 import javafx.event.ActionEvent;
@@ -75,7 +76,9 @@ public class InicioJuegoController {
         boolean confirmacion = alert.mostrarAlertaDeConfirmacion
                 ("Alerta de iniciar juego", "Esta es una ventana de alerta", "Deseas iniciar el juego?");
         if(confirmacion){
+
             PantallaJugadorView pantallaJugadorView = PantallaJugadorView.getInstance();
+            //pantallaJugadorView.getController().resetWindow();
             pantallaJugadorView.getController().setJugador(jugadorPersona);
             pantallaJugadorView.getController().mostrarNombreJugador();
             pantallaJugadorView.show();
@@ -92,7 +95,7 @@ public class InicioJuegoController {
     }
 
     @FXML
-    void onActionLoadButton(ActionEvent event) {
+    void onActionLoadButton(ActionEvent event) throws IOException {
         LoadGameAlert loadAlert = new LoadGameAlert();
         boolean confirmation = loadAlert.mostrarAlertaDeConfirmacion(
                 "Alerta de cargar partida",
@@ -104,6 +107,12 @@ public class InicioJuegoController {
 
             if (state != null){
 
+                JuegoBatallaNavalView juegoView = JuegoBatallaNavalView.getInstance();
+                JuegoBatallaNavalController controller = juegoView.getController();
+
+                controller.restoreGameState(state);
+                juegoView.show();
+                hideStartView();
             }
             else {
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);

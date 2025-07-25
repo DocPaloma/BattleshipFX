@@ -8,12 +8,17 @@ import java.util.Optional;
 public class LeaveGameAlert implements AlertaInterface{
     @Override
     public boolean mostrarAlertaDeConfirmacion(String tittle, String header, String content) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(tittle);
         alert.setHeaderText(header);
         alert.setContentText(content);
 
-        Optional<ButtonType> result = alert.showAndWait(); //Muestra la alerta y espera la respuesta
+        ButtonType yesBttn = new ButtonType("Sí");
+        ButtonType noBttn = new ButtonType("No");
+
+        alert.getButtonTypes().setAll(yesBttn, noBttn);
+
+        Optional<ButtonType> result = alert.showAndWait();
 
         return result.isPresent() && result.get() == ButtonType.OK;
     }
