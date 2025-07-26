@@ -72,6 +72,10 @@ public class JuegoBatallaNavalController implements Observer {
     @FXML
     private Button leaveGameButton;
 
+    @FXML
+    private Button botonMostrarTableroMaquina;
+
+
 
     /**
      * Saves and updates the JugadorPersona instance and keeps the board current
@@ -189,13 +193,6 @@ public class JuegoBatallaNavalController implements Observer {
                 celda.setStyle("-fx-border-color: black;");
 
                 if(jugadorMaquina.getTablero().hayBarco(fila, columna)){
-                    /**
-                    String ruta = jugadorMaquina.getTablero().getRutaImagen(fila, columna);
-                    ImagePattern patron = new ImagePattern(new Image(getClass().getResourceAsStream(ruta)));
-                    Rectangle barcoRectangle = new Rectangle(40, 40);
-                    barcoRectangle.setFill(patron);
-                    celda.getChildren().add(barcoRectangle);
-                     **/
                     Barco barco = jugadorMaquina.getTablero().getBarco(fila, columna);
                     int tamano = barco.getTamano();
 
@@ -301,6 +298,12 @@ public class JuegoBatallaNavalController implements Observer {
                 celda.setOnMouseClicked(event -> {
                     if(funcionamientoJuego.getTurnoJugador() && !funcionamientoJuego.juegoTerminado()){
                         funcionamientoJuego.disparoSegunTurno(filaFinal, columnaFinal); // jugadorPersona dispara en las coordenadas seleccionadas
+
+                        // Cuando sea el segundo turno lo que va a hacer es ocultar el boton para no visualizar la estrategia de la maquina
+                        if (funcionamientoJuego.getTurno() >= 1) {
+                            botonMostrarTableroMaquina.setVisible(false);
+                            botonMostrarTableroMaquina.setManaged(false); // Oculta sin dejar espacio
+                        }
 
                         // Para saber si es turno de la maquina
                         if(!funcionamientoJuego.getTurnoJugador() && !funcionamientoJuego.juegoTerminado()){
@@ -680,7 +683,6 @@ public class JuegoBatallaNavalController implements Observer {
             }
         }
     }
-
 
 
 

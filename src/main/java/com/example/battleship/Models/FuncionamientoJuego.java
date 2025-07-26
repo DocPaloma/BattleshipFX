@@ -17,9 +17,9 @@ public class FuncionamientoJuego implements Serializable {
     private JugadorPersona jugadorPersona;
     private JugadorMaquina jugadorMaquina;
     private boolean turnoJugador; // true (jugadorPersona), false (jugadorMaquina)
-    //private Tablero ultimoTableroJugado;
     private int barcosP = 10;
     private int barcosM = 10;
+    private int turno = 0;
 
 
     /**
@@ -52,8 +52,8 @@ public class FuncionamientoJuego implements Serializable {
         // Disparo cuando es el turno del jugadorPersona
         if (turnoJugador) {
             aciertoDisparo = jugadorPersona.disparar(jugadorMaquina.getTablero(), fila, columna);
-            //ultimoTableroJugado = jugadorMaquina.getTablero();
 
+            turno++;
             // Si falla entonces debe de cambiar turno
             if (!aciertoDisparo) {
                 cambiarTurno();
@@ -73,6 +73,8 @@ public class FuncionamientoJuego implements Serializable {
                 System.out.println("Jugador Máquina disparó en: (" +
                         coor[0] + ", " +
                         coor[1] + ")");
+
+                turno++;
 
                 //ultimoTableroJugado = jugadorPersona.getTablero();
             } while (aciertoDisparo);
@@ -153,6 +155,14 @@ public class FuncionamientoJuego implements Serializable {
         return barcosM;
     }
 
+    public int contTurno(){
+        turno++;
+        return turno;
+    }
+
+    public int getTurno() {
+        return turno;
+    }
 
     public JugadorMaquina getCPUPlayer(){
         return jugadorMaquina;

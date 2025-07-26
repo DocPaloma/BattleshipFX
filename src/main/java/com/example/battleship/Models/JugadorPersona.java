@@ -12,6 +12,7 @@ package com.example.battleship.Models;
 // puede disparar al enemigo y puede darse cuenta si se queda sin barcos
 public class JugadorPersona extends  Jugador {
 
+    private int contTurno2 = 0;
     /**
      * Constructor that calls the parent class constructor using super
      *
